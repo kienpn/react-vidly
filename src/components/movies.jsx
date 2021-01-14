@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/fakeMovieService";
 
 import Like from "./common/like";
 import Pagination from "./common/pagination";
+import { getMovies } from "../services/fakeMovieService";
+import { paginate } from "../utils/paginate";
 
 class Movies extends Component {
   state = {
@@ -30,7 +31,7 @@ class Movies extends Component {
 
   render() {
     const { length: count } = this.state.movies;
-    const { currentPage, pageSize } = this.state;
+    const { currentPage, pageSize, movies: allMovies } = this.state;
 
     if (count === 0) {
       return (
@@ -39,6 +40,8 @@ class Movies extends Component {
         </span>
       );
     }
+
+    const movies = paginate(allMovies, currentPage, pageSize);
 
     return (
       <div>
@@ -58,7 +61,7 @@ class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map((movie) => (
+            {movies.map((movie) => (
               <tr key={movie._id}>
                 <th scope="row">{movie.title}</th>
                 <td>{movie.genre.name}</td>
