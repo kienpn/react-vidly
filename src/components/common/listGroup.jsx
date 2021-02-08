@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 import PropTypes from "prop-types";
 
 const ListGroup = (props) => {
@@ -10,8 +9,6 @@ const ListGroup = (props) => {
     textProperty,
     valueProperty,
   } = props;
-  // console.log(items);
-  console.log(selectedItem);
 
   return (
     <nav>
@@ -39,11 +36,15 @@ ListGroup.defaultProps = {
   valueProperty: "_id",
 };
 
-// ListGroup.propTypes = {
-//   itemsCount: PropTypes.number.isRequired,
-//   onPageChange: PropTypes.func.isRequired,
-//   currentPage: PropTypes.number.isRequired,
-//   pageSize: PropTypes.number.isRequired,
-// };
+ListGroup.propTypes = {
+  items: PropTypes.array.isRequired,
+  onItemSelect: PropTypes.func.isRequired,
+  selectedItem: PropTypes.any.isRequired,
+
+  // itemsCount: PropTypes.number.isRequired,
+  // onPageChange: PropTypes.func.isRequired,
+  // currentPage: PropTypes.number.isRequired,
+  // pageSize: PropTypes.number.isRequired,
+};
 
 export default ListGroup;
