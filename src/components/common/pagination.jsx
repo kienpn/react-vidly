@@ -11,7 +11,7 @@ const Pagination = (props) => {
 
   return (
     <nav>
-      <ul className="pagination">
+      <ul className="pagination clickable">
         {pages.map((page) => (
           <li
             key={page}

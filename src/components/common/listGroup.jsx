@@ -12,7 +12,7 @@ const ListGroup = (props) => {
 
   return (
     <nav>
-      <ul className="list-group">
+      <ul className="list-group clickable">
         {items.map((item) => (
           <li
             key={item[valueProperty]}
