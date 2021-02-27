@@ -45,20 +45,6 @@ class MoviesTable extends Component {
         onSort={onSort}
         sortColumn={sortColumn}
       />
-      // <table className="table">
-      //   <TableHeader
-      //     columns={this.columns}
-      //     onSort={onSort}
-      //     sortColumn={sortColumn}
-      //   />
-
-      // <TableBody
-      //   data={movies}
-      //   columns={this.columns}
-      //   onLike={onLike}
-      //   onDelete={onDelete}
-      // />
-      // </table>
     );
   }
 }

@@ -7,6 +7,7 @@ import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 import { paginate } from "../utils/paginate";
 import MoviesTable from "./moviesTable";
+import { Link } from "react-router-dom";
 
 class Movies extends Component {
   state = {
@@ -48,6 +49,8 @@ class Movies extends Component {
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
+
+  handleAddMovie = () => {};
 
   getPagedData = () => {
     const {
@@ -106,6 +109,12 @@ class Movies extends Component {
           </div>
           <div className="col">
             <div>
+              <div>
+                <Link className="btn btn-primary" to="/movies/new">
+                  New Movie
+                </Link>
+              </div>
+
               <span className="badge badge-primary">
                 Showing {totalCount} movies in the database.
               </span>
