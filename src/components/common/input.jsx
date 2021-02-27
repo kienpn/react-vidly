@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 
-const Input = ({ error, label, name, ...rest }) => {
+const Input = ({ error, label, name, placeholder, ...rest }) => {
   return (
     <div className="form-group">
-      <label htmlFor={name}>{label}</label>
+      {/* {!showPlaceholder && <label htmlFor={name}>{label}</label>} */}
+      <label htmlFor={name}>{label !== "" && label}</label>
       <input
         // value={value}
         // onChange={onChange}
@@ -12,6 +13,7 @@ const Input = ({ error, label, name, ...rest }) => {
         name={name}
         id={name}
         className="form-control"
+        placeholder={placeholder !== "" && placeholder}
       />
       {error && <div className="alert alert-danger">{error}</div>}
     </div>

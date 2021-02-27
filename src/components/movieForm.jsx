@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import { getMovie, saveMovie } from "../services/fakeMovieService";
-import Select from "./common/select";
 import { getGenres } from "../services/fakeGenreService";
 
 class MovieForm extends Form {
@@ -37,7 +36,6 @@ class MovieForm extends Form {
   };
 
   componentDidMount() {
-    let cbbOptions = {};
     const genres = [...getGenres()];
     this.setState({ genres });
 
@@ -58,7 +56,7 @@ class MovieForm extends Form {
   }
 
   render() {
-    const { data, errors, genres } = this.state;
+    const { genres } = this.state;
 
     return (
       <div>

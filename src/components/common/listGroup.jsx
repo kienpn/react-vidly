@@ -40,11 +40,6 @@ ListGroup.propTypes = {
   items: PropTypes.array.isRequired,
   onItemSelect: PropTypes.func.isRequired,
   selectedItem: PropTypes.any.isRequired,
-
-  // itemsCount: PropTypes.number.isRequired,
-  // onPageChange: PropTypes.func.isRequired,
-  // currentPage: PropTypes.number.isRequired,
-  // pageSize: PropTypes.number.isRequired,
 };
 
 export default ListGroup;

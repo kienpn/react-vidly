@@ -8,6 +8,8 @@ import { getGenres } from "../services/fakeGenreService";
 import { paginate } from "../utils/paginate";
 import MoviesTable from "./moviesTable";
 import { Link } from "react-router-dom";
+import Input from "./common/input";
+import SearchBox from "./common/searchBox";
 
 class Movies extends Component {
   state = {
@@ -15,8 +17,10 @@ class Movies extends Component {
     movies: [],
     // currentGenre: genres[0],
     currentPage: 1,
-    pageSize: 4,
+    pageSize: 3,
     sortColumn: { path: "title", order: "asc" },
+    searchQuery: "",
+    selectedGenre: "",
   };
 
   componentDidMount() {
@@ -43,11 +47,19 @@ class Movies extends Component {
   };
 
   handleGenreSelect = (genre) => {
-    this.setState({ selectedGenre: genre, currentPage: 1 });
+    this.setState({ selectedGenre: genre, currentPage: 1, searchQuery: "" });
   };
 
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
+  };
+
+  handleSearch = (query) => {
+    this.setState({
+      searchQuery: query,
+      selectedGenre: "",
+      currentPage: 1,
+    });
   };
 
   handleAddMovie = () => {};
@@ -59,12 +71,19 @@ class Movies extends Component {
       pageSize,
       selectedGenre,
       sortColumn,
+      searchQuery,
     } = this.state;
 
-    const filteredMovies =
-      selectedGenre && selectedGenre._id
-        ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
-        : allMovies;
+    let filteredMovies = allMovies;
+    if (searchQuery) {
+      filteredMovies = allMovies.filter((m) =>
+        m.title.toUpperCase().startsWith(searchQuery.toUpperCase())
+      );
+    } else if (selectedGenre && selectedGenre._id) {
+      filteredMovies = allMovies.filter(
+        (m) => m.genre._id === selectedGenre._id
+      );
+    }
 
     const sortedMovies = _.orderBy(
       filteredMovies,
@@ -85,6 +104,7 @@ class Movies extends Component {
       pageSize,
       selectedGenre,
       sortColumn,
+      searchQuery,
     } = this.state;
 
     if (count === 0) {
@@ -118,6 +138,8 @@ class Movies extends Component {
               <span className="badge badge-primary">
                 Showing {totalCount} movies in the database.
               </span>
+
+              <SearchBox value={searchQuery} onChange={this.handleSearch} />
 
               <MoviesTable
                 movies={movies}
