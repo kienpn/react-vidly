@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import Input from "./input";
+import React from "react";
 
 const SearchBox = (props) => {
   const { value, onChange } = props;
