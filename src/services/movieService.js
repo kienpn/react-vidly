@@ -1,29 +1,31 @@
 import httpService from "./httpService";
+import config from "../config.json";
+import { getGenres } from "../services/genreService";
 
-const apiEndpoint = "http://localhost:3900/api/movies";
+const apiEndpoint = config.apiUrl + "/movies";
 
 export function getMovies() {
   return httpService.get(apiEndpoint);
 }
 
-export function getMovie(id) {
-  // return movies.find((m) => m._id === id);
+function movieUrl(id) {
+  return `${apiEndpoint}/${id}`;
+}
+
+export function getMovie(movieId) {
+  return httpService.get(movieUrl(movieId));
 }
 
 export function saveMovie(movie) {
-  // let movieInDb = movies.find((m) => m._id === movie._id) || {};
-  // movieInDb.title = movie.title;
-  // movieInDb.genre = genresAPI.genres.find((g) => g._id === movie.genreId);
-  // movieInDb.numberInStock = movie.numberInStock;
-  // movieInDb.dailyRentalRate = movie.dailyRentalRate;
-  // if (!movieInDb._id) {
-  //   movieInDb._id = Date.now().toString();
-  //   movies.push(movieInDb);
-  //   console.log({ movies });
-  // }
-  // return movieInDb;
+  if (movie._id) {
+    const body = { ...movie };
+    delete body._id;
+    return httpService.put(movieUrl(movie._id), body);
+  }
+
+  return httpService.post(apiEndpoint, movie);
 }
 
 export function deleteMovie(movieId) {
-  return httpService.delete(apiEndpoint + "/" + movieId);
+  return httpService.delete(movieUrl(movieId));
 }

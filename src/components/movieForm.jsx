@@ -1,12 +1,17 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovie, saveMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
 
 class MovieForm extends Form {
   state = {
-    data: { title: "", numberInStock: "", dailyRentalRate: "", genreId: "" },
+    data: {
+      title: "",
+      numberInStock: "",
+      dailyRentalRate: "",
+      genreId: "",
+    },
     errors: {},
     genres: [],
   };
@@ -27,32 +32,45 @@ class MovieForm extends Form {
       .label("Daily Rental Rate"),
   };
 
-  doSubmit = () => {
+  doSubmit = async () => {
     // call the server
     console.log("Movie Submitted", this.state.data);
 
-    saveMovie(this.state.data);
+    await saveMovie(this.state.data);
     this.props.history.push("/movies");
   };
 
-  componentDidMount() {
-    const genres = [...getGenres()];
+  async componentDidMount() {
+    await this.populateGenres();
+    await this.populateMovies();
+  }
+
+  async populateGenres() {
+    const { data: genres } = await getGenres();
     this.setState({ genres });
+  }
 
-    const { match } = this.props;
-    const moviedId = match.params.id;
-    if (moviedId === "new") return;
-    const movie = getMovie(moviedId);
-    if (!movie) return this.props.history.replace("/not-found");
+  async populateMovies() {
+    try {
+      const moviedId = this.props.match.params.id;
+      if (moviedId === "new") return;
 
-    const data = {
+      const { data: movie } = await getMovie(moviedId);
+      this.setState({ data: this.mapToViewModel(movie) });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        this.props.history.replace("/not-found");
+    }
+  }
+
+  mapToViewModel(movie) {
+    return {
       _id: movie._id,
       title: movie.title,
       numberInStock: movie.numberInStock,
       dailyRentalRate: movie.dailyRentalRate,
       genreId: movie.genre._id,
     };
-    this.setState({ data });
   }
 
   render() {
