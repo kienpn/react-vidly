@@ -17,7 +17,9 @@ class LoginForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      const response = await authService.login(data.email, data.password);
+      const { data: jwt } = await authService.login(data.email, data.password);
+      localStorage.setItem("token", jwt);
+      this.props.history.push("/");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
@@ -32,8 +34,8 @@ class LoginForm extends Form {
       <div>
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("Email", "email", "email")}
-          {this.renderInput("Password", "password", "password")}
+          {this.renderInput("Email user1@domain.com", "email", "email")}
+          {this.renderInput("Password 123456", "password", "password")}
           {this.renderButton("Login")}
         </form>
       </div>
